@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>16 Anos de Amor</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		html,
+		body {
+			height: 100%;
+			font-family: Arial, sans-serif;
+			overflow: hidden;
+			position: relative;
+			color: white;
+		}
+
+		/* Vídeo de fundo */
+		#bg-video {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100vw;
+			height: 100vh;
+			object-fit: cover;
+			z-index: -2;
+			filter: brightness(0.5);
+		}
+
+		.overlay {
+			position: relative;
+			z-index: 1;
+			padding: 2em;
+			text-align: center;
+			overflow-y: auto;
+			height: 100vh;
+		}
+
+		h1 {
+			font-size: 3em;
+			text-shadow: 2px 2px 8px #ff69b4;
+			margin-bottom: 20px;
+		}
+
+		.texto-amor {
+			background-color: rgba(255, 255, 255, 0.1);
+			padding: 20px;
+			border-radius: 15px;
+			margin: 0 auto 10px;
+			max-width: 2000px;
+			font-size: 1.3em;
+			line-height: 1.6;
+			text-shadow: 1px 1px 4px #000;
+		}
+
+		.carousel {
+			margin: 0 auto;
+			max-width: 2000px;
+			position: relative;
+		}
+
+		.carousel img {
+			width: 100%;
+			border-radius: 15px;
+			box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+		}
+
+		.carousel button {
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			background-color: rgba(255, 182, 193, 0.7);
+			border: none;
+			padding: 10px;
+			cursor: pointer;
+			border-radius: 50%;
+		}
+
+		.carousel .prev {
+			left: -20px;
+		}
+
+		.carousel .next {
+			right: -20px;
+		}
+
+		/* Corações caindo */
+		.heart {
+			position: fixed;
+			top: -20px;
+			width: 15px;
+			height: 15px;
+			background-color: red;
+			transform: rotate(45deg);
+			opacity: 0.8;
+			z-index: 0;
+			animation: fall 10s linear infinite;
+		}
+
+		.heart::before,
+		.heart::after {
+			content: "";
+			position: absolute;
+			width: 15px;
+			height: 15px;
+			background-color: red;
+			border-radius: 50%;
+		}
+
+		.heart::before {
+			top: -7.5px;
+			left: 0;
+		}
+
+		.heart::after {
+			left: -7.5px;
+			top: 0;
+		}
+
+		@keyframes fall {
+			0% {
+				transform: translateY(0) rotate(45deg);
+				opacity: 1;
+			}
+
+			100% {
+				transform: translateY(110vh) rotate(45deg);
+				opacity: 0;
+			}
+		}
+	</style>
+</head>
+
+<!-- ... mantendo todo o código anterior ... -->
+
+<body>
+
+	<!-- Vídeo de fundo -->
+	<video autoplay muted loop playsinline id="bg-video">
+		<source src="videos/edson-e-hudson.mp4" type="video/mp4" />
+		Seu navegador não suporta vídeos HTML5.
+	</video>
+
+	<div class="overlay">
+		<h1>16 Anos de Amor</h1>
+
+		<div class="texto-amor">
+			Bianca, meu amor, minha vida,
+
+			Nestes 16 anos ao seu lado, aprendi que o amor verdadeiro não está nas palavras bonitas, mas nos gestos simples,
+			no
+			cuidado diário, na presença constante — e você foi tudo isso e muito mais pra mim.
+
+			Vivemos tantos momentos especiais, mas nenhum deles foi tão marcante quanto aquele em que vimos pela primeira vez
+			o
+			rostinho da nossa filha. O nascimento da Manuella não só transformou nossas vidas, como fortaleceu ainda mais a
+			nossa
+			união. Ela é, sem dúvida, a maior prova do nosso amor, o elo eterno que nos conecta e nos completa.
+
+			Eu me sinto o homem mais abençoado do mundo por ter você como minha companheira de vida, minha melhor amiga, minha
+			paz.
+			Te admiro por tudo que você é: forte, carinhosa, guerreira, e dona do sorriso que sempre consegue acalmar meu
+			coração.
+
+			Obrigado por caminhar comigo, por dividir a vida, por construir um lar onde o amor é o que mais importa.
+
+			Que venham mais 16, mais 30, mais 100 anos ao seu lado. Porque se for com você, o tempo nunca será demais.
+
+			Eu te amo profundamente, Bianca. Para sempre seu,
+
+			Henrique.
+		</div>
+
+		<!-- Botão para ativar som -->
+		<button id="sound-btn" style="
+      margin-bottom: 12px;
+      padding: 10px 20px;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 10px;
+      background: #ff69b4;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 0 10px #ff69b4;
+      transition: background 0.3s;
+    ">Ativar Som</button>
+
+		<div class="carousel">
+			<button class="prev">&lt;</button>
+			<img id="carousel-img" src="images/1.jpg" alt="Foto 1" />
+			<button class="next">&gt;</button>
+		</div>
+
+	</div>
+
+	<script>
+		// Carrossel
+		const images = Array.from({ length: 24 }, (_, i) => `images/${i + 1}.jpg`);
+		let index = 0;
+		const img = document.getElementById("carousel-img");
+
+		function showImage(i) {
+			img.src = images[i];
+		}
+
+		document.querySelector(".prev").addEventListener("click", () => {
+			index = (index - 1 + images.length) % images.length;
+			showImage(index);
+		});
+
+		document.querySelector(".next").addEventListener("click", () => {
+			index = (index + 1) % images.length;
+			showImage(index);
+		});
+
+		setInterval(() => {
+			index = (index + 1) % images.length;
+			showImage(index);
+		}, 3000);
+
+		// Corações caindo
+		function createHeart() {
+			const heart = document.createElement("div");
+			heart.classList.add("heart");
+
+			const size = Math.random() * 10 + 10;
+			heart.style.width = `${size}px`;
+			heart.style.height = `${size}px`;
+			heart.style.left = `${Math.random() * 100}vw`;
+			heart.style.animationDuration = `${Math.random() * 10 + 10}s`; // Mais lento
+
+			document.body.appendChild(heart);
+			setTimeout(() => heart.remove(), 25000); // Duração maior para acompanhar o tempo de animação
+		}
+
+		setInterval(createHeart, 200);
+
+		// Botão ativar som
+		const video = document.getElementById("bg-video");
+		const soundBtn = document.getElementById("sound-btn");
+
+		soundBtn.addEventListener("click", () => {
+			if (video.muted) {
+				video.muted = false;
+				soundBtn.textContent = "Som Ativado";
+				soundBtn.style.background = "#32cd32";
+				// Para garantir que o vídeo está tocando:
+				video.play();
+			} else {
+				video.muted = true;
+				soundBtn.textContent = "Ativar Som";
+				soundBtn.style.background = "#ff69b4";
+			}
+		});
+	</script>
+</body>
+
+
+</html>
